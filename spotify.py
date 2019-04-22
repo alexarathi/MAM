@@ -18,7 +18,7 @@ clientid = spotify_info.consumer_key
 clientid_secret = spotify_info.secret_key
 redirecturi = spotify_info.redirect_uri
 
-#get the username from terminal
+#get the username from terminal!
 username = 'miriam_akkary@yahoo.com'
 scope = 'user-library-read'
 try: 
