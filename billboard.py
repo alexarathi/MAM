@@ -4,7 +4,7 @@ import requests
 import os
 import sqlite3
 
-#Create BeautifulSoup object
+#Create BeautifulSoup objects!
 url = 'https://www.billboard.com/charts/hot-100'
 r = requests.get(url)
 soup = BeautifulSoup(r.text, 'html.parser')
