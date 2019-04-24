@@ -13,6 +13,9 @@ import spotipy.util as util
 import matplotlib
 import matplotlib.pyplot as plt 
 
+#HOW TO RUN: 
+#run the code, and you will get redirected to google. enter the google URL into terminal and click enter
+#after you do that, run the code again and you will be all set!
 
 clientid = spotify_info.consumer_key
 clientid_secret = spotify_info.secret_key
@@ -56,9 +59,6 @@ for x in results['items']:
 
     playlist_id_name[playlist_name] = my_playlist_names
 
-
-
-
 # makes a dictionary where the key is the ID number and the value are all the songs in the playlist
 playlist_result_dict = {}
 playlist_count = 0
@@ -75,8 +75,6 @@ for playlist_id in playlist_result_dict.keys():
         song_list.append(song_name)
     songs_in_playlist[playlist_id] = song_list
 
-
-
 try:
     filename = open('spotify.json', 'r')
     file_results = json.loads(filename)
@@ -90,22 +88,17 @@ except:
     filename = open('spotify.json', 'w')
     filename.write(json.dumps(playlist_result_dict))
 
-
-
-
 # CREATING A DATABASE!
 conn = sqlite3.connect('SpotifyDatabase.sqlite')
 cur = conn.cursor()
 
-
 cur.execute('CREATE TABLE Spotify (playlist_name TEXT, playlist_id TEXT, song TEXT)') 
-
+#inserts the dictionary into the table! 
 for (key, val) in songs_in_playlist.items(): 
     for song in val: 
         cur.execute('INSERT INTO Spotify (playlist_name,playlist_id, song) VALUES (?,?,?)', (playlist_id_name[key],key, song))
 
 conn.commit()
-
 conn.close()
 
 
@@ -120,4 +113,3 @@ conn.close()
 
 
 
-#hey!
