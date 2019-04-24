@@ -110,6 +110,7 @@ artist_song_list = cur.execute("SELECT artist, song FROM Billboard")
     #artist_list.append(x[0])
 finalArtistInfo = allArtistInfo(artist_list)
 #writeToDatabase(finalArtistInfo)
+#hi
 
 
 
