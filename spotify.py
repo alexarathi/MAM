@@ -1,4 +1,3 @@
-
 import spotify_info
 import requests
 import json
@@ -70,10 +69,19 @@ for x in playlist_list:
 songs_in_playlist = {}
 for playlist_id in playlist_result_dict.keys():
     song_list = []
+    artist_list = []
+    song_plus_artist = []
     for y in playlist_result_dict[playlist_id]["tracks"]['items']:
         song_name = y['track']['name']
         song_list.append(song_name)
-    songs_in_playlist[playlist_id] = song_list
+        artist_name = y['track']['album']['artists']
+        for artist in artist_name:
+            actual_artist = artist['name']
+            artist_list.append(actual_artist)
+    for x in range(len(song_list)):
+        song_plus_artist.append((song_list[x], artist_list[x]))
+    songs_in_playlist[playlist_id] = song_plus_artist
+    print(songs_in_playlist)
 
 try:
     filename = open('spotify.json', 'r')
@@ -89,15 +97,15 @@ except:
     filename.write(json.dumps(playlist_result_dict))
 
 # CREATING A DATABASE!
-conn = sqlite3.connect('SpotifyDatabase.sqlite')
+conn = sqlite3.connect('SIProject.sqlite')
 cur = conn.cursor()
 
-cur.execute('CREATE TABLE Spotify (playlist_name TEXT, playlist_id TEXT, song TEXT)') 
+cur.execute('DROP TABLE IF EXISTS Spotify')
+cur.execute('CREATE TABLE Spotify (playlist_name TEXT, playlist_id TEXT, song TEXT, artist TEXT)') 
 #inserts the dictionary into the table! 
 for (key, val) in songs_in_playlist.items(): 
     for song in val: 
-        cur.execute('INSERT INTO Spotify (playlist_name,playlist_id, song) VALUES (?,?,?)', (playlist_id_name[key],key, song))
-
+        cur.execute('INSERT INTO Spotify (playlist_name,playlist_id, song, artist) VALUES (?,?,?,?)', (playlist_id_name[key],key, song[0], song[1]))
 conn.commit()
 conn.close()
 

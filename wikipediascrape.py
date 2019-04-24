@@ -13,7 +13,7 @@ url = "https://en.wikipedia.org/wiki/"
 html = urlopen(url, context=ctx).read()
 soup = BeautifulSoup(html, "html.parser")
 
-conn = sqlite3.connect('Billboard.sqlite')
+conn = sqlite3.connect('SIProject.sqlite')
 cur = conn.cursor()
 
 
@@ -72,14 +72,10 @@ def getartistLocation(url):
                         new_x = x.strip("Origin")
                         reg_string.append(new_x)
         final_location = reg_string[0]
+        return(final_location)
     except:
         final_location = "Unknown"
-    if final_location == "Unknown":
-        soup = BeautifulSoup(html, "html.parser")
-        li_container = soup.find_all('li')
-        for x in li_container:
-            if x.a.text == ""
-        print(li_container)
+        return(final_location)
         
 def allArtistInfo(artists):
     artist_dict = {}
@@ -93,23 +89,36 @@ def allArtistInfo(artists):
             unknown_count.append(x)
     return artist_dict
 
-def writeToDatabase(artist_dict):
+def BillboardWriteToDatabase(artist_dict):
     cur.execute('DROP TABLE IF EXISTS Wikipedia')
     cur.execute('CREATE TABLE Wikipedia(source TEXT, artist TEXT, location TEXT)')
     source = "Billboard"
     for artist in artist_dict.keys():
-        print(artist)
         cur.execute("INSERT INTO Wikipedia (source, artist, location) VALUES (?,?,?)",(source, artist, artist_dict[artist]))
     conn.commit()
 
+def SpotifyWriteToDatabase(artist_dict):
+    source = "Spotify"
+    for artist in artist_dict.keys():
+        cur.execute("INSERT INTO Wikipedia (source, artist, location) VALUES (?,?,?)", (source, artist, artist_dict[artist]))
+    conn.commit()
+
+
 
 #cur.execute('CREATE TABLE Wikipedia(source TEXT, artist TEXT, song TEXT, location TEXT)')
-artist_list = ["Old Dominion"]
-artist_song_list = cur.execute("SELECT artist, song FROM Billboard")
-#for x in artist_song_list:
-    #artist_list.append(x[0])
-finalArtistInfo = allArtistInfo(artist_list)
-#writeToDatabase(finalArtistInfo)
+billboard_artist_list = []
+billboard_song_list = cur.execute("SELECT artist, song FROM Billboard")
+for x in billboard_song_list:
+    billboard_artist_list.append(x[0])
+finalArtistInfo = allArtistInfo(billboard_artist_list)
+BillboardWriteToDatabase(finalArtistInfo)
+spotify_list = []
+spotify_song_list = cur.execute("SELECT artist, song FROM Spotify")
+for x in spotify_song_list:
+    spotify_list.append(x[0])
+spotifyArtistInfo = allArtistInfo(spotify_list)
+SpotifyWriteToDatabase(spotifyArtistInfo)
+
 #hi
 
 
