@@ -140,14 +140,16 @@ def get_spotify_location_dict(siprojectdb):
     for row in cur:
         party_playlist.append(row[1])
 
-    #
+    #grabs artists from Spotify Table with SI 206! as playlist and adds to a list
     si_dict = {}
     cur.execute('SELECT playlist_name, artist FROM Spotify WHERE playlist_name = "SI 206!"')
     si_playlist = []
     for row in cur:
         si_playlist.append(row[1])
 
+    #Grabs all info from Wikipedia Table with Spotify as source
     wikipedia_info = cur.execute('SELECT source, artist, location FROM Wikipedia WHERE source = "Spotify"')
+    #Loops through wikipedia items/Checks if artist is in each playlist/Updates each playlist dictionary for location and count of artists there
     for row in wikipedia_info:
         if row[1] in mam_playlist:
             if row[2] in mam_dict.keys():
@@ -164,9 +166,12 @@ def get_spotify_location_dict(siprojectdb):
                 si_dict[row[2]] += 1
             else:
                 si_dict[row[2]] = 1
+    #Adds each playlist dictionary to the total spotify location dictionary
     spotify_location_dict['MAM JAMS!'] = mam_dict
     spotify_location_dict['Party!'] = party_dict
     spotify_location_dict['SI 206!'] = si_dict
+
+    #Adds spotify location calculations to calculations dictionary
     all_data['Spotify Artist Locations'] = spotify_location_dict
     return(spotify_location_dict)
 
@@ -220,13 +225,19 @@ def spotify_location_visualization(spotify_location_dict):
 
     plt.show()
 
-
+#Runs Spotify and Billboard Info/Visualization
 spotify_billboard_dict = get_spotify_dict('SIProject.sqlite')
 spotify_billboard_visualization(spotify_billboard_dict)
+
+#Runs Billboard and Wikipedia Location Info/Visualization
 location_dict = get_billboard_artist_location('SIProject.sqlite')
 billboard_location_visualization(location_dict)
+
+#Runs Spotify and Wikipedia Location Info/Visualization
 spotify_info_dict = get_spotify_location_dict('SIProject.sqlite')
 spotify_location_visualization(spotify_info_dict)
+
+#Creates JSON file for calculations
 filename = open('SIProject.json', 'w')
 filename.write(json.dumps(all_data))
 filename.close()
