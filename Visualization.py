@@ -115,7 +115,7 @@ def billboard_location_visualization(location_dict):
     plt.xticks(rotation = 90)
     
     #sets the axis labels and title for graph
-    ax.set_xlabel("Playlist Name")
+    ax.set_xlabel("Location")
     ax.set_ylabel("# of Songs in Top 100")
     ax.set_title("Songs per Playlist in Top 100")
 
@@ -179,50 +179,59 @@ def get_spotify_location_dict(siprojectdb):
 
 
 def spotify_location_visualization(spotify_location_dict):
-   
+    #creates x values for each playlist
     names = spotify_location_dict['MAM JAMS!'].keys()
     names2 = spotify_location_dict['Party!'].keys()
     names3 = spotify_location_dict['SI 206!'].keys()
 
+    #creates y values for each playlist
     values = spotify_location_dict['MAM JAMS!'].values()
     values2 = spotify_location_dict['Party!'].values()
     values3 = spotify_location_dict['SI 206!'].values()
 
+    #creates the figure
     fig = plt.figure(figsize = (10,25))
 
-    ax1 = fig.add_subplot(421)
+    #makes the first bar graph for MAM JAMS! playlist, setting the position, title, labels, and spreading out x axis objects
+    ax1 = fig.add_subplot(541)
     ax1.set_title("MAM JAMS!")
     ax1.set_xlabel("Locations")
     ax1.set_ylabel("# of Songs")
     fig.subplots_adjust(bottom = 0.3)
 
+    #updates the fontsize and actually gives puts in the values for x and y
     for tick in ax1.xaxis.get_major_ticks(): 
         tick.label.set_fontsize(4)
     plt.bar(names, values, color = ['blue', 'green', 'red', 'cyan', 'purple', 'black', 'magenta', 'yellow', 'lightblue', 'orange'])
     plt.xticks(rotation = 90)
 
-    ax2 = fig.add_subplot(422)
+    #makes the second bar graph for Party! playlist, setting the position, title, labels, and spreading out x axis objects
+    ax2 = fig.add_subplot(543)
     ax2.set_title("Party!")
     ax2.set_xlabel("Locations")
     ax2.set_ylabel("# of Songs")
     fig.subplots_adjust(bottom = 0.3)
 
+    #updates the fontsize and actually gives puts in the values for x and y
     for tick in ax2.xaxis.get_major_ticks(): 
         tick.label.set_fontsize(4)
     plt.bar(names2, values2, color = ['blue', 'green', 'red', 'cyan', 'purple', 'black', 'magenta', 'yellow', 'lightblue', 'orange'])
     plt.xticks(rotation = 90)
 
-    ax3 = fig.add_subplot(542)
+    #Makes the third bar graph for SI 206! playlist, setting the position, title, labels, and spreadig  out x axis objects
+    ax3 = fig.add_subplot(549)
     ax3.set_title("SI 206!")
     ax3.set_xlabel("Locations")
     ax3.set_ylabel("# of Songs")
     fig.subplots_adjust(bottom = 0.3)
-
+    
+    #updates the fontsize and actually gives puts in the values for x and y
     for tick in ax3.xaxis.get_major_ticks(): 
         tick.label.set_fontsize(4)
     plt.bar(names3, values3, color = ['blue', 'green', 'red', 'cyan', 'purple', 'black', 'magenta', 'yellow', 'lightblue', 'orange'])
     plt.xticks(rotation = 90)
 
+    #presents the graphs created
     plt.show()
 
 #Runs Spotify and Billboard Info/Visualization
